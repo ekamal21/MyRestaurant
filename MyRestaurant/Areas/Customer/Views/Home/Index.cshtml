@@ -1,0 +1,56 @@
+﻿@model MyRestaurant.Models.ViewModels.IndexViewModel
+
+<br />
+
+      <div class="backgroundYellow container">
+         
+          <ul id="menu-filters" class="menu-filter-list list-inline text-center">
+              <li class="active btn btn-secondary ml-1 mr-1" data-filter=".menu-restaurant">Show All</li>
+
+              @foreach (var item in Model.Category)
+              {
+                  <li class="ml-1 mr-1" data-filter=".@item.Name.Replace(" ",string.Empty)">@item.Name</li>
+              }
+          </ul>
+
+
+          @foreach(var category in Model.Category)
+          {
+              <div class="row" id="menu-wrapper">
+                  <partial name="_ThumbnailAreaPartial" model="@Model.MenuItem.Where(u=>u.Category.Name.Equals(category.Name))" />
+              </div>
+          }
+      </div>
+
+
+@section Scripts{ 
+    <!--we added jquery to index page-->
+      <script src="https://code.jquery.com/jquery-3.3.1.js"
+              integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+              crossorigin="anonymous"></script>
+
+<script>
+
+    var posts = $('.post');
+    //this function will display the clicked meun visble
+    (function ($) {
+
+        $("#menu-filters li").click(function () {
+            $("#menu-filters li").removeClass('active btn btn-secondary');
+            $(this).addClass('active btn btn-secondary');
+
+            var selectedFilter = $(this).data("filter");
+
+            $(".menu-restaurant").fadeOut();
+
+            setTimeout(function () {
+                $(selectedFilter).slideDown();
+            }, 300);
+        });
+
+
+
+    })(jQuery);
+ 
+</script>
+    }
